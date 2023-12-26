@@ -260,15 +260,19 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Future<void> _printDoc(List data, String total) async {
-    final image = await imageFromAssetBundle(
-      "assets/image/logo.png",
-    );
+    // final image = await imageFromAssetBundle(
+    // "assets/image/logo.png",
+    // );
     final font = await fontFromAssetBundle('assets/fonts/Amiri.ttf');
     final doc = pw.Document();
     doc.addPage(pw.Page(
         pageFormat: PdfPageFormat.roll80,
         build: (pw.Context context) {
-          return buildPrintableProduct(image, data, total, font);
+          return buildPrintableProduct(
+              //image,
+              data,
+              total,
+              font);
         }));
     await Printing.layoutPdf(
         onLayout: (PdfPageFormat format) async => doc.save(),

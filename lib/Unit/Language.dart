@@ -3,6 +3,7 @@ Map<bool, dynamic> language = {
   true: {
     "NoConnection": "لايوجد اتصال انترنت",
     "next": "التالي",
+    "Reduction": "تخفيض",
     "serverLogin": "تسجيل الدخول الي السيرفر",
     "localLogin": "تسجيل دخول العامل",
     "localRegister": "انشاء حساب عامل جديد",
@@ -58,6 +59,7 @@ Map<bool, dynamic> language = {
   false: {
     "NoConnection": "No internet connection",
     "next": "Next",
+    "Reduction": "Reduction",
     "serverLogin": "Server Login",
     "localLogin": "Employee Login",
     "localRegister": "Create New Employee Account",

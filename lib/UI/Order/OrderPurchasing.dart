@@ -1,6 +1,7 @@
 import 'package:live_pharmacy/Unit/Language.dart';
 import 'package:live_pharmacy/Unit/const.dart';
 import 'package:live_pharmacy/Unit/unitColor.dart';
+import 'package:live_pharmacy/widgets/TextFieldWidget.dart';
 import 'package:live_pharmacy/widgets/TextUnit.dart';
 import 'package:drop_shadow/drop_shadow.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class OrderPurchasing extends StatefulWidget {
   Function(int) Reduce;
   Function(int) Add;
   Function() removeAll;
-  Function(String) print;
+  Function(String, String) print;
 
   OrderPurchasing(
       {super.key,
@@ -31,6 +32,7 @@ class OrderPurchasing extends StatefulWidget {
 
 class _OrderPurchasingState extends State<OrderPurchasing> {
   final TextEditingController _controller = TextEditingController();
+  TextEditingController controller = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class _OrderPurchasingState extends State<OrderPurchasing> {
                     ? GestureDetector(
                         onTap: () {
                           widget.removeAll();
+                          controller.text = "";
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),
@@ -109,6 +112,14 @@ class _OrderPurchasingState extends State<OrderPurchasing> {
                           ),
                           child: Column(
                             children: [
+                              TextFieldWidget(
+                                  onchanged: (v) {
+                                    setState(() {});
+                                  },
+                                  textInputType: TextInputType.number,
+                                  textEditingController: controller,
+                                  text: language[modeControll.LanguageValue]
+                                      ["Reduction"]),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -118,7 +129,8 @@ class _OrderPurchasingState extends State<OrderPurchasing> {
                                         ['total'],
                                   ),
                                   TextUnit.TextTitel(
-                                    text: 'SD ${widget.total}',
+                                    text:
+                                        'SD ${(double.parse(widget.total) - (double.parse(widget.total) * int.parse(controller.text == "" ? "0" : controller.text) / 100)).toStringAsFixed(2)}',
                                   ),
                                 ],
                               ),
@@ -141,11 +153,18 @@ class _OrderPurchasingState extends State<OrderPurchasing> {
                                         Navigator.of(context).pop();
                                       },
                                       onClickNotOK: () {
+                                        _controller.text = "0";
                                         chick = false;
+
                                         Navigator.of(context).pop();
                                       });
+                                  if (controller.text.isEmpty) {
+                                    controller.text = "";
+                                  }
                                   widget.print(
-                                      validatePhoneNumber(_controller.text));
+                                      validatePhoneNumber(_controller.text),
+                                      controller.text);
+                                  controller.text = "";
                                 },
                                 child: Container(
                                   width: double.infinity,

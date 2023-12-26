@@ -1,7 +1,11 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-buildPrintableProduct(image, List data, String titel, pw.Font font) =>
+buildPrintableProduct(
+        //image,
+        List data,
+        String titel,
+        pw.Font font) =>
     pw.Padding(
       padding: const pw.EdgeInsets.all(10.00),
       child: pw.Column(children: [

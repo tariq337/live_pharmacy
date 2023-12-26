@@ -44,6 +44,7 @@ class ConnectionController extends GetxController with DioServer {
     List<Map<String, dynamic>> purchasings = [];
     purBox.values.toList().forEach((element) {
       purchasings.add({
+        "reduction": element["reduction"],
         "products": element["products"],
         "timestamp": element["timestamp"],
         "userName": element["userName"],

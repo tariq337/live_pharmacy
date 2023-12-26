@@ -1,7 +1,13 @@
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-buildPrintableData(image, List data, String total, pw.Font font) => pw.Padding(
+buildPrintableData(
+        //image,
+        List data,
+        String total,
+        pw.Font font,
+        String reduction) =>
+    pw.Padding(
       padding: const pw.EdgeInsets.all(10.00),
       child: pw.Column(children: [
         pw.Text("صيدلية لايف",
@@ -72,8 +78,18 @@ buildPrintableData(image, List data, String total, pw.Font font) => pw.Padding(
                 width: double.infinity,
                 height: 36.00,
                 child: pw.Row(
-                  mainAxisAlignment: pw.MainAxisAlignment.end,
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                   children: [
+                    pw.Text(
+                      "التخفيض $reduction%",
+                      textDirection: pw.TextDirection.rtl,
+                      style: pw.TextStyle(
+                        font: font,
+                        fontSize: 12.00,
+                        fontWeight: pw.FontWeight.bold,
+                        color: const PdfColor(0.2, 0.6, 0.2, 0.7),
+                      ),
+                    ),
                     pw.Text(
                       "SD $total",
                       textDirection: pw.TextDirection.rtl,

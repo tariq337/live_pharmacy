@@ -29,6 +29,7 @@ class _OrderPageState extends State<OrderPage> {
   TextEditingController searchControll = TextEditingController();
   PurchasingController purchasingController = Get.put(PurchasingController());
   UserController userController = Get.put(UserController());
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -120,11 +121,15 @@ class _OrderPageState extends State<OrderPage> {
                           removeAll: () {
                             storeController.removeAll();
                           },
-                          print: (String phon) async {
+                          print: (String phon, String reduction) async {
                             List products = [];
+                            if (reduction.isEmpty) {
+                              reduction = "0";
+                            }
                             Map<dynamic, dynamic> sales = {
                               "phoneNumber": phon,
                               "products": [],
+                              "reduction": reduction,
                               "timestamp": DateTime.now().toString(),
                               "userName": userController.userItem.value.name
                             };
@@ -146,8 +151,14 @@ class _OrderPageState extends State<OrderPage> {
                                 purchasing: sales);
                             await storeController.updateAllProdact(
                                 prodacts: storeController.carts.value);
-                            await printDoc(data,
-                                storeController.getTotal().toStringAsFixed(2));
+                            await printDoc(
+                                data,
+                                (storeController.getTotal() -
+                                        (storeController.getTotal() *
+                                            double.parse(reduction) /
+                                            100))
+                                    .toStringAsFixed(2),
+                                reduction);
                             storeController.removeAll();
                             Messge.notification(
                                 language[modeControll.LanguageValue]["don"],
@@ -166,16 +177,21 @@ class _OrderPageState extends State<OrderPage> {
     );
   }
 
-  Future<void> printDoc(List data, String total) async {
-    final image = await imageFromAssetBundle(
-      "assets/image/logo.png",
-    );
+  Future<void> printDoc(List data, String total, String reduction) async {
+    //   final image = await imageFromAssetBundle(
+    //   "assets/image/logo.png",
+    // );
     final font = await fontFromAssetBundle('assets/fonts/Amiri.ttf');
     final doc = pw.Document();
     doc.addPage(pw.Page(
         pageFormat: PdfPageFormat.roll80,
         build: (pw.Context context) {
-          return buildPrintableData(image, data, total, font);
+          return buildPrintableData(
+              //image,
+              data,
+              total,
+              font,
+              reduction);
         }));
     await Printing.layoutPdf(
         onLayout: (PdfPageFormat format) async => doc.save(),
